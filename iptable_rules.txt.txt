@@ -1,24 +1,22 @@
-# Allow all incoming traffic on wg0
+# Allow traffic on  wg0
 sudo iptables -A INPUT -i wg0 -j ACCEPT
-# Allow all outgoing traffic on wg0
 sudo iptables -A OUTPUT -o wg0 -j ACCEPT
+
+# Accept forwarded traffic (already in your PostUp):
+ sudo iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
 
 # Redirect all DNS (UDP/53) from any IP coming through wg0 to Tor's DNSPort (5353)
 sudo iptables -t nat -A PREROUTING -i wg0 -p udp -j REDIRECT --to-ports 5353
+
 # Redirect all TCP traffic (new connections) from any IP on wg0 to Tor’s TransPort (9040)
 sudo iptables -t nat -A PREROUTING -i wg0 -p tcp --syn -j REDIRECT --to-ports 9040
 
-# Allow all input traffic into 5353 and 9040
 sudo iptables -A INPUT -i wg0 -p udp --dport 5353 -j ACCEPT
 sudo iptables -A INPUT -i wg0 -p tcp --dport 9040 -j ACCEPT
-
-# Accept forwarded traffic (already in PostUp):
-# sudo iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
 
 # Allow localhost and Tor daemon traffic
 sudo iptables -A OUTPUT -m owner --uid-owner debian-tor -j ACCEPT
 sudo iptables -A OUTPUT -o lo -j ACCEPT
-sudo iptables -A OUTPUT -p udp --sport 8443 -j ACCEPT
 
 # Block all other outbound traffic
 sudo iptables -A OUTPUT -j DROP
