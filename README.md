@@ -1,2 +1,7 @@
-# TorProxyVPN
-Configuration for a VPN that proxies a connection through a Tor relay
+# Tor Proxy VPN
+This repository contains the configuration for a Wireguard VPN that proxies a connection through a Tor relay. This allows privacy by fully anonymizing your IP as a transparent proxy but does NOT secure your browser against web injections, cookie data collections, or other social engineering. Additionally, the speeds will be extremely slow (20 mpbs) and this is ethically not recommended for mass downloading of illegal content, both due to the unethical nature of piracy as well as the stress it would put on the Tor network. 
+
+This works by first establishing a wireguard connection between a client and the linux server running the VPN. Apply wg0.conf to the server and one of the client .conf files to the client. Then connect the linux server to the Tor relay by installing tor, configuring the torrc file, and restarting the service. Finally, reroute all the traffic from wg0 to the Tor interface on ports 5353 and 9040.
+
+Note: I broke something and there's a missing iptables rule preventing the client from connecting to the server - if you figure it out, please let me know! Symptoms include not being able to ping or resolve any DNS queries. Additionally if your client is on windows, Windows Defender will likely try to block the connection. I get around this by putting my wireguard interfaces as a private networks while my internet is on public networks and limiting the firewall rules on private networks while leaving the public network firewalls as overly aggressive.
+
