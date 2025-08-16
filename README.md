@@ -3,5 +3,4 @@ This repository contains the configuration for a Wireguard VPN that proxies a co
 
 This works by first establishing a wireguard connection between a client and the linux server running the VPN. Apply wg0.conf to the server and one of the client .conf files to the client. Then connect the linux server to the Tor relay by installing tor, configuring the torrc file, and restarting the service. Finally, reroute all the traffic from wg0 to the Tor interface on ports 5353 and 9040.
 
-Additionally if your client is on windows, Windows Defender will likely try to block the connection. I get around this by putting my wireguard interfaces as a private networks while my internet is on public networks and limiting the firewall rules on private networks while leaving the public network firewalls as overly aggressive.
-
+Additionally if your client is on windows, Windows Defender will likely try to block the connection. I get around this by putting my wireguard interfaces as a private networks while my internet is on public networks and limiting the firewall rules on private networks while leaving the public network firewalls as overly aggressive. Finally, DDNS URLs seem to not work with this setup. Use a raw IP endpoint instead (I have one VPN w DDNS that I can use to check my raw IP of the colocated tor VPN)
