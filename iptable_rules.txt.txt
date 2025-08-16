@@ -1,3 +1,5 @@
+sudo wg-quick up wg0
+
 # Allow traffic on  wg0
 sudo iptables -A INPUT -i wg0 -j ACCEPT
 sudo iptables -A OUTPUT -o wg0 -j ACCEPT
@@ -19,4 +21,19 @@ sudo iptables -A OUTPUT -m owner --uid-owner debian-tor -j ACCEPT
 sudo iptables -A OUTPUT -o lo -j ACCEPT
 
 # Block all other outbound traffic
-sudo iptables -A OUTPUT -j DROP
+# sudo iptables -A OUTPUT -j DROP
+
+Check using 
+
+torsocks curl https://check.torproject.org/ | less
+
+or use
+
+. torsocks on/off
+
+sudo iptables -t nat -L -n -v
+
+
+
+# sudo netfilter-persistent save
+# sudo netfilter-persistent reload
